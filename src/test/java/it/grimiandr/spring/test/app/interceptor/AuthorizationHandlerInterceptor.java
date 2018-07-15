@@ -13,8 +13,8 @@ import it.grimiandr.security.jwt.annotation.RequireClientIdAuth;
 import it.grimiandr.security.jwt.annotation.RequireJWTAuth;
 import it.grimiandr.security.jwt.constant.ApiResponse;
 import it.grimiandr.security.jwt.constant.WebConstants;
-import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.core.Jwt;
+import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.exception.ApiException;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
 import it.grimiandr.security.util.StringUtil;
@@ -73,8 +73,7 @@ public class AuthorizationHandlerInterceptor extends HandlerInterceptorAdapter {
 				if (jwtHeader == null || !jwtHeader.startsWith("Bearer "))
 					throw new ApiException(ApiResponse.MISSING_JWT_HEADER_CODE);
 
-				// il substring serve a togliere il primo oggetto
-				// decodificato
+				// removes "Bearer "
 				ObjectNode tokenData = Jwt.decodeToken(jwtHeader.substring(7));
 
 				// possono essere usati per le richieste che utilizzano JWT
@@ -85,20 +84,13 @@ public class AuthorizationHandlerInterceptor extends HandlerInterceptorAdapter {
 						throw new ApiException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
 					}
 				} else {
-					// token refresh non valido per API che richiedono il JWT
+					// refresh_token cannot be used to call APIs
 					throw new ApiException(ApiResponse.INVALID_JWT_TOKEN_CODE);
 				}
 
-				// *******************************************************************
-				// DA CUSTOMIZZARE CON I PROPRI CRITERI DI ESTRAZIONE DELL'UTENTE
-				// prendere l'utente in funzione delle informazioni del jwt
 				User user = userService.getUserById(tokenData.get("sub").asInt());
-				// *******************************************************************
 
-				// ogni volta che viene effettuata una chiamata con un
-				// autentication token viene controllata la password
-				// dell'utente in quanto possa essere scaduta (ovvero
-				// l'utente l'ha cambiata)
+				// checks if password still be valid
 				if (JwtAuthentication.checkToken(tokenData,
 						new UserToAuthenticate(user.getId().toString(), user.getEmail(), user.getPassword()))) {
 					throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);

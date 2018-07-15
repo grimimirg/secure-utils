@@ -2,8 +2,10 @@ package it.grimiandr.test.app.main;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.grimiandr.security.jwt.constant.ApiResponse;
 import it.grimiandr.security.jwt.core.Jwt;
 import it.grimiandr.security.jwt.core.JwtAuthentication;
+import it.grimiandr.security.jwt.exception.ApiException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
@@ -68,18 +70,18 @@ public class MainTest {
 		String decryptedToken = new SecureUtil().setUp(key, alg, cipher).decrypt(access_token);
 
 		ObjectNode tokenData = Jwt.decodeToken(decryptedToken);
-//
-//		if (!tokenData.get("refresh").asBoolean()) {
-//			if (!JwtUtil.isTokenExpired(tokenData)) {
-//				throw new ApiException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
-//			}
-//		} else {
-//			throw new ApiException(ApiResponse.INVALID_JWT_TOKEN_CODE);
-//		}
-//
-//		if (!JwtAuthentication.checkToken(tokenData, userToAuthenticate)) {
-//			throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
-//		}
+
+		if (!tokenData.get("refresh").asBoolean()) {
+			if (!Jwt.isTokenExpired(tokenData)) {
+				throw new ApiException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
+			}
+		} else {
+			throw new ApiException(ApiResponse.INVALID_JWT_TOKEN_CODE);
+		}
+
+		if (!JwtAuthentication.checkToken(tokenData, userToAuthenticate)) {
+			throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
+		}
 	}
 
 }
