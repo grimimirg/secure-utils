@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.grimiandr.security.jwt.constant.ApiResponse;
 import it.grimiandr.security.jwt.core.Jwt;
 import it.grimiandr.security.jwt.core.JwtAuthentication;
-import it.grimiandr.security.jwt.exception.ApiException;
+import it.grimiandr.security.jwt.exception.StandardException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
@@ -71,14 +71,14 @@ public class MainTest {
 
 		if (!tokenData.get("refresh").asBoolean()) {
 			if (Jwt.isTokenExpired(tokenData)) {
-				throw new ApiException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
+				throw new StandardException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
 			}
 		} else {
-			throw new ApiException(ApiResponse.INVALID_JWT_TOKEN_CODE);
+			throw new StandardException(ApiResponse.INVALID_JWT_TOKEN_CODE);
 		}
 
 		if (!JwtAuthentication.isTokenValid(tokenData, userToAuthenticate)) {
-			throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
+			throw new StandardException(ApiResponse.WRONG_PASSWORD_CODE);
 		}
 	}
 

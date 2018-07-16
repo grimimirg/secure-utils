@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import it.grimiandr.security.jwt.constant.ApiResponse;
-import it.grimiandr.security.jwt.exception.ApiException;
+import it.grimiandr.security.jwt.exception.StandardException;
 import it.grimiandr.security.util.SecureUtil;
 import it.grimiandr.security.validation.annotation.SecureGenericCheck;
 import it.grimiandr.security.validation.annotation.SecureGenericCheckObject;
@@ -102,14 +102,14 @@ public class SecurityAspect {
 		case GENERIC:
 			boolean genericSecurityCheck = SecureUtil.genericSecurityCheck(arg);
 			if (!genericSecurityCheck) {
-				throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+				throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 			}
 			break;
 		case OBJECT:
 			try {
 				boolean genericSecurityCheckObject = SecureUtil.genericSecurityCheckObject(arg);
 				if (!genericSecurityCheckObject) {
-					throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+					throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 				}
 			} catch (Exception e) {
 				// TODO better exception handling
@@ -119,10 +119,10 @@ public class SecurityAspect {
 			try {
 				boolean specificSecurityCheck = SecureUtil.specificSecurityCheck(annotations, arg);
 				if (!specificSecurityCheck) {
-					throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+					throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 				}
 			} catch (Exception e) {
-				throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+				throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 			}
 			break;
 		default:

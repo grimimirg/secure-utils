@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.grimiandr.security.jwt.constant.ApiResponse;
-import it.grimiandr.security.jwt.exception.ApiException;
+import it.grimiandr.security.jwt.exception.StandardException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
@@ -106,7 +106,7 @@ public class JwtAuthentication {
 			throws Exception {
 
 		if (userToAuthenticate == null) {
-			throw new ApiException(ApiResponse.NOT_FOUND_CODE);
+			throw new StandardException(ApiResponse.NOT_FOUND_CODE);
 		}
 
 		String decodedToken = null;
@@ -121,24 +121,24 @@ public class JwtAuthentication {
 
 				// password check for each authentication with refresh_token
 				if (this.passwordMatch(tokenData.get("password").asText(), userToAuthenticate)) {
-					throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
+					throw new StandardException(ApiResponse.WRONG_PASSWORD_CODE);
 				}
 
 			} else {
 				try {
 					// the password must be the same
 					if (!this.passwordMatch(userCredentials.getPassword(), userToAuthenticate)) {
-						throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
+						throw new StandardException(ApiResponse.WRONG_PASSWORD_CODE);
 					}
 
 				} catch (Exception e) {
-					throw new ApiException(ApiResponse.INTERNAL_SERVER_ERROR_CODE);
+					throw new StandardException(ApiResponse.INTERNAL_SERVER_ERROR_CODE);
 				}
 
 			}
 
 		} catch (Exception e) {
-			throw new ApiException(ApiResponse.INVALID_JWT_TOKEN_CODE);
+			throw new StandardException(ApiResponse.INVALID_JWT_TOKEN_CODE);
 		}
 
 		// a new authentication is generated

@@ -5,7 +5,7 @@ package it.grimiandr.security.jwt.exception;
  * @author andre
  *
  */
-public class ApiException extends RuntimeException {
+public class StandardException extends RuntimeException {
 
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class ApiException extends RuntimeException {
 	 * 
 	 * @param msg
 	 */
-	public ApiException(int msg) {
+	public StandardException(int msg) {
 		super(String.valueOf(msg));
 	}
 }
