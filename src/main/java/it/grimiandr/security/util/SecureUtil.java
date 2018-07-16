@@ -2,11 +2,11 @@ package it.grimiandr.security.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
 
 import it.grimiandr.security.validation.annotation.SecurePatternCheck;
 import it.grimiandr.security.validation.pattern.PatternSecurityCheck;
@@ -52,15 +52,15 @@ public class SecureUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public String encrypt(String input) throws Exception {
-		SecretKeySpec key = new SecretKeySpec(this.key.getBytes(), this.alg);
+	public byte[] encrypt(String input) throws Exception {
+		byte[] bytes = this.key.getBytes(Charset.forName("UTF-8"));
+		SecretKeySpec key = new SecretKeySpec(bytes, this.alg);
 		Cipher cipher = Cipher.getInstance(this.cipher);
 
-		cipher.init(Cipher.ENCRYPT_MODE, key);
-		byte[] raw = cipher.doFinal(input.getBytes());
-		String strCipher = new Base64().encodeToString(raw);
-
-		return strCipher;
+		cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(new byte[16]));
+		byte[] bytes2 = input.getBytes(Charset.forName("UTF-8"));
+		byte[] doFinal = cipher.doFinal(bytes2);
+		return doFinal;
 	}
 
 	/**
@@ -69,15 +69,15 @@ public class SecureUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public String decrypt(String input) throws Exception {
-		SecretKeySpec key = new SecretKeySpec(this.key.getBytes(), this.alg);
+	public String decrypt(byte[] input) throws Exception {
+		byte[] bytes = this.key.getBytes(Charset.forName("UTF-8"));
+		SecretKeySpec key = new SecretKeySpec(bytes, this.alg);
 		Cipher cipher = Cipher.getInstance(this.cipher);
 
-		cipher.init(Cipher.DECRYPT_MODE, key);
-		byte[] raw = cipher.doFinal(input.getBytes());
-		String strCipher = new Base64().encodeToString(raw);
-
-		return strCipher;
+		cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(new byte[16]));
+		byte[] raw = cipher.doFinal(input);
+		String string = new String(raw, Charset.forName("UTF-8"));
+		return string;
 	}
 
 	/**

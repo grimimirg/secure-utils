@@ -154,9 +154,9 @@ public class JwtAuthentication {
 	 * @param user
 	 * @return
 	 */
-	public static boolean checkToken(ObjectNode tokenData, UserToAuthenticate user) {
-		if (!tokenData.get("password").asText().equals(user.getPassword())
-				&& user.getUserIdentifier().equals(user.getUserIdentifier())) {
+	public static boolean isTokenValid(ObjectNode tokenData, UserToAuthenticate user) {
+		if (tokenData.get("password").asText().equals(user.getPassword())
+				&& tokenData.get("sub").asText().equals(user.getUserIdentifier())) {
 			return true;
 		}
 

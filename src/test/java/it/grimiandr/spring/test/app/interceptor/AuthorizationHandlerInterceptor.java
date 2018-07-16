@@ -74,7 +74,7 @@ public class AuthorizationHandlerInterceptor extends HandlerInterceptorAdapter {
 					throw new ApiException(ApiResponse.MISSING_JWT_HEADER_CODE);
 
 				// removes "Bearer "
-				ObjectNode tokenData = Jwt.decodeToken(jwtHeader.substring(7));
+				ObjectNode tokenData = new Jwt("key", "alg", "cipher").decodeToken(jwtHeader.substring(7));
 
 				// possono essere usati per le richieste che utilizzano JWT
 				// solamente token non di tipo "refresh"
@@ -91,7 +91,7 @@ public class AuthorizationHandlerInterceptor extends HandlerInterceptorAdapter {
 				User user = userService.getUserById(tokenData.get("sub").asInt());
 
 				// checks if password still be valid
-				if (JwtAuthentication.checkToken(tokenData,
+				if (JwtAuthentication.isTokenValid(tokenData,
 						new UserToAuthenticate(user.getId().toString(), user.getEmail(), user.getPassword()))) {
 					throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
 				}

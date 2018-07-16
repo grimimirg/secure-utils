@@ -9,7 +9,6 @@ import it.grimiandr.security.jwt.exception.ApiException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
-import it.grimiandr.security.util.SecureUtil;
 
 /**
  * 
@@ -26,7 +25,7 @@ public class MainTest {
 	/**
 	 * 
 	 */
-	private static String key = "L!y<#XQntRKa*!Z#";
+	private static String key = "VkYp3s6v9y$B&E)H@McQfTjWmZq4t7w!";
 
 	/**
 	 * 
@@ -63,23 +62,19 @@ public class MainTest {
 		authenticate = new JwtAuthentication(secret, key, alg, cipher, expirationDaysToken, expirationDaysRefreshToken)
 				.authenticate(userCredentials, userToAuthenticate);
 
-		System.out.println(authenticate.getAccess_token());
-
 		String access_token = authenticate.getAccess_token();
 
-		String decryptedToken = new SecureUtil().setUp(key, alg, cipher).decrypt(access_token);
-
-		ObjectNode tokenData = Jwt.decodeToken(decryptedToken);
+		ObjectNode tokenData = new Jwt(key, alg, cipher).decodeToken(access_token);
 
 		if (!tokenData.get("refresh").asBoolean()) {
-			if (!Jwt.isTokenExpired(tokenData)) {
+			if (Jwt.isTokenExpired(tokenData)) {
 				throw new ApiException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
 			}
 		} else {
 			throw new ApiException(ApiResponse.INVALID_JWT_TOKEN_CODE);
 		}
 
-		if (!JwtAuthentication.checkToken(tokenData, userToAuthenticate)) {
+		if (!JwtAuthentication.isTokenValid(tokenData, userToAuthenticate)) {
 			throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
 		}
 	}

@@ -108,23 +108,28 @@ public class Jwt {
 		}
 
 		String compact = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
-		return new SecureUtil().setUp(this.key, this.alg, this.cipher).encrypt(compact);
+		byte[] encrypt = new SecureUtil().setUp(this.key, this.alg, this.cipher).encrypt(compact);
+		return new Base64().encodeAsString(encrypt);
 	}
 
 	/**
 	 * 
-	 * @param token
+	 * @param encryptedToken
 	 * @return
 	 */
-	public static ObjectNode decodeToken(String token) {
+	public ObjectNode decodeToken(String encryptedToken) {
 
 		try {
 
 			// gets a clean string token
-			String tokenString = new String(Base64.decodeBase64(token), "UTF-8");
+			byte[] decodeBase64 = Base64.decodeBase64(encryptedToken);
+			String decryptedEncodedToken = new SecureUtil().setUp(this.key, this.alg, this.cipher)
+					.decrypt(decodeBase64);
+
+			String decodedToken = new String(Base64.decodeBase64(decryptedEncodedToken));
 
 			// remove the first part of the token because it's useless
-			ObjectNode tokenData = new ObjectMapper().readValue(tokenString.substring(15), ObjectNode.class);
+			ObjectNode tokenData = new ObjectMapper().readValue(decodedToken.substring(15), ObjectNode.class);
 
 			// token must not be expired
 			if (Jwt.isTokenExpired(tokenData))
@@ -144,6 +149,6 @@ public class Jwt {
 	 * @return
 	 */
 	public static boolean isTokenExpired(ObjectNode token) {
-		return new Date().after(new Date(token.get("expiration").asLong()));
+		return !new Date(token.get("expiration").asLong()).after(new Date());
 	}
 }
