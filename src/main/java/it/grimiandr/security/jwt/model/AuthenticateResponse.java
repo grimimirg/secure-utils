@@ -13,51 +13,51 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude
 public class AuthenticateResponse {
 
-	private String access_token;
+	private String accessToken;
 
-	private String user_identifier;
+	private String userIdentifier;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-	private Date expires_on;
+	private Date expiresOn;
 
-	private String refresh_token;
+	private String refreshToken;
 
-	public String getAccess_token() {
-		return access_token;
+	public String getAccessToken() {
+		return accessToken;
 	}
 
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
-	public Date getExpires_on() {
-		return expires_on;
+	public Date getExpiresOn() {
+		return expiresOn;
 	}
 
-	public void setExpires_on(Date expires_on) {
-		this.expires_on = expires_on;
+	public void setExpiresOn(Date expiresOn) {
+		this.expiresOn = expiresOn;
 	}
 
-	public String getUser_identifier() {
-		return user_identifier;
+	public String getUserIdentifier() {
+		return userIdentifier;
 	}
 
-	public void setUser_identifier(String user_identifier) {
-		this.user_identifier = user_identifier;
+	public void setUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
 	}
 
-	public String getRefresh_token() {
-		return refresh_token;
+	public String getRefreshToken() {
+		return refreshToken;
 	}
 
-	public void setRefresh_token(String refresh_token) {
-		this.refresh_token = refresh_token;
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 	@Override
 	public String toString() {
-		return "AuthenticateResponse [access_token=" + access_token + ", user_identifier=" + user_identifier
-				+ ", expires_on=" + expires_on + ", refresh_token=" + refresh_token + "]";
+		return "AuthenticateResponse [access_token=" + accessToken + ", user_identifier=" + userIdentifier
+				+ ", expires_on=" + expiresOn + ", refresh_token=" + refreshToken + "]";
 	}
 
 }

@@ -75,10 +75,10 @@ public class Jwt {
 		LocalDateTime refreshTokenExpirationDate = LocalDateTime.now().plusDays(refreshJwtExpirationDays);
 		Date refrTokenExpirationDate = Date.from(refreshTokenExpirationDate.atZone(ZoneId.systemDefault()).toInstant());
 
-		response.setAccess_token(generateToken(userIdentifier, password, secret, authTokenExpirationDate, false));
-		response.setExpires_on(authTokenExpirationDate);
-		response.setUser_identifier(userIdentifier);
-		response.setRefresh_token(generateToken(userIdentifier, password, secret, refrTokenExpirationDate, true));
+		response.setAccessToken(generateToken(userIdentifier, password, secret, authTokenExpirationDate, false));
+		response.setExpiresOn(authTokenExpirationDate);
+		response.setUserIdentifier(userIdentifier);
+		response.setRefreshToken(generateToken(userIdentifier, password, secret, refrTokenExpirationDate, true));
 
 		return response;
 	}

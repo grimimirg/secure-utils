@@ -9,11 +9,11 @@ public class StringUtil {
 
 	/**
 	 * 
-	 * @param pArg
+	 * @param string
 	 * @return
 	 */
-	public static boolean isVoid(String pArg) {
-		return (pArg == null || "".equals(pArg.trim()));
+	public static boolean isVoid(String string) {
+		return (string == null || "".equals(string.trim()));
 	}
 
 }

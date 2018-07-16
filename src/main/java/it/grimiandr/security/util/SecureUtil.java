@@ -53,14 +53,12 @@ public class SecureUtil {
 	 * @throws Exception
 	 */
 	public byte[] encrypt(String input) throws Exception {
-		byte[] bytes = this.key.getBytes(Charset.forName("UTF-8"));
-		SecretKeySpec key = new SecretKeySpec(bytes, this.alg);
+		byte[] keyBytes = this.key.getBytes(Charset.forName("UTF-8"));
+		SecretKeySpec key = new SecretKeySpec(keyBytes, this.alg);
 		Cipher cipher = Cipher.getInstance(this.cipher);
-
 		cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(new byte[16]));
-		byte[] bytes2 = input.getBytes(Charset.forName("UTF-8"));
-		byte[] doFinal = cipher.doFinal(bytes2);
-		return doFinal;
+		byte[] inputBytes = input.getBytes(Charset.forName("UTF-8"));
+		return cipher.doFinal(inputBytes);
 	}
 
 	/**
@@ -70,30 +68,22 @@ public class SecureUtil {
 	 * @throws Exception
 	 */
 	public String decrypt(byte[] input) throws Exception {
-		byte[] bytes = this.key.getBytes(Charset.forName("UTF-8"));
-		SecretKeySpec key = new SecretKeySpec(bytes, this.alg);
+		byte[] keyBytes = this.key.getBytes(Charset.forName("UTF-8"));
+		SecretKeySpec key = new SecretKeySpec(keyBytes, this.alg);
 		Cipher cipher = Cipher.getInstance(this.cipher);
-
 		cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(new byte[16]));
-		byte[] raw = cipher.doFinal(input);
-		String string = new String(raw, Charset.forName("UTF-8"));
-		return string;
+		byte[] inputDecryptedBytes = cipher.doFinal(input);
+		return new String(inputDecryptedBytes, Charset.forName("UTF-8"));
 	}
 
 	/**
-	 * controllo generico sul valore di un determinato parametro.
-	 * 
-	 * utile quando devono essere effettuati controlli sui parametri che vengono
-	 * passati ai controller.
+	 * generic check on object content. useful to check parameters on controllers.
 	 * 
 	 * @param arg
 	 * @return
 	 */
 	public static boolean genericSecurityCheck(Object arg) {
 		String tmp = null;
-
-		// qui si possono gestire eventuali altri casi di controllo in funzione del tipo
-		// di dato che arriva come parametro
 
 		if (arg instanceof String) {
 			tmp = (String) arg;
@@ -109,11 +99,6 @@ public class SecureUtil {
 	}
 
 	/**
-	 * vengono controllate tutte le propriet� di un oggetto applicando per ognuna di
-	 * esse il genericSecurityCheck.
-	 * 
-	 * utile quando dev'essere effettuato un controllo su un payload che viene
-	 * passato ad un controller
 	 * 
 	 * @param object
 	 * @return
@@ -122,9 +107,7 @@ public class SecureUtil {
 	public static boolean genericSecurityCheckObject(Object object) throws Exception {
 		Method[] methods = object.getClass().getMethods();
 		for (Method method : methods) {
-			// soltanto i getter
-			// TODO da eslcudere il getCLass() e i getter sulle password
-			// in modo pi� furbo
+			// only getters
 			if (method.getName().toLowerCase().substring(0, 3).equals("get")
 					&& !method.getName().toLowerCase().equals("getclass")
 					&& !method.getName().toLowerCase().contains("password")) {
@@ -142,15 +125,13 @@ public class SecureUtil {
 	 * @throws Exception
 	 */
 	public static boolean specificSecurityCheck(Annotation[] annotations, Object toCheck) throws Exception {
-		// viene presa la prima annotation @SecureSpecificCheck (ce ne dev'essere
-		// solamente una)
+		// at least one @SecureSpecificCheck must be present (if some) in order to
+		// perform a specific check
 		for (Annotation annotation : annotations) {
 			if (annotation.annotationType().equals(SecurePatternCheck.class)) {
 				SecurePatternCheck patternWrapper = (SecurePatternCheck) annotation;
 				Class<?> pattern = patternWrapper.pattern();
-				// istanziata la classe che deve effettuare il controllo
 				PatternSecurityCheck newInstance = (PatternSecurityCheck) pattern.newInstance();
-				// esecuzione del controllo
 				return newInstance.isPatternMatch(toCheck);
 			}
 		}

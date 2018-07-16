@@ -53,18 +53,21 @@ public class MainTest {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+
+		// the authenticationr equest
 		UserCredentials userCredentials = new UserCredentials("grimiandr@protonmail.ch", "123456");
+
+		// the actual user that must be authenticated (usually taken locally based on
+		// "username" of "UserCredentials")
 		UserToAuthenticate userToAuthenticate = new UserToAuthenticate("grimiandr@protonmail.ch",
 				"grimiandr@protonmail.ch", "123456");
 
-		AuthenticateResponse authenticate = null;
+		AuthenticateResponse authenticate = new JwtAuthentication(secret, key, alg, cipher, expirationDaysToken,
+				expirationDaysRefreshToken).authenticate(userCredentials, userToAuthenticate);
 
-		authenticate = new JwtAuthentication(secret, key, alg, cipher, expirationDaysToken, expirationDaysRefreshToken)
-				.authenticate(userCredentials, userToAuthenticate);
+		String accessToken = authenticate.getAccessToken();
 
-		String access_token = authenticate.getAccess_token();
-
-		ObjectNode tokenData = new Jwt(key, alg, cipher).decodeToken(access_token);
+		ObjectNode tokenData = new Jwt(key, alg, cipher).decodeToken(accessToken);
 
 		if (!tokenData.get("refresh").asBoolean()) {
 			if (Jwt.isTokenExpired(tokenData)) {
