@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import it.grimiandr.security.jwt.constant.ApiResponse;
 import it.grimiandr.security.jwt.exception.ApiException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
-import it.grimiandr.security.util.SecureUtil;
+import it.grimiandr.security.util.CryptoUtil;
 
 /**
  * 
@@ -108,7 +108,7 @@ public class Jwt {
 		}
 
 		String compact = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
-		byte[] encrypt = new SecureUtil().setUp(this.key, this.alg, this.cipher).encrypt(compact);
+		byte[] encrypt = new CryptoUtil().setUp(this.key, this.alg, this.cipher).encrypt(compact);
 		return new Base64().encodeAsString(encrypt);
 	}
 
@@ -123,7 +123,7 @@ public class Jwt {
 
 			// gets a clean string token
 			byte[] decodeBase64 = Base64.decodeBase64(encryptedToken);
-			String decryptedEncodedToken = new SecureUtil().setUp(this.key, this.alg, this.cipher)
+			String decryptedEncodedToken = new CryptoUtil().setUp(this.key, this.alg, this.cipher)
 					.decrypt(decodeBase64);
 
 			String decodedToken = new String(Base64.decodeBase64(decryptedEncodedToken));
