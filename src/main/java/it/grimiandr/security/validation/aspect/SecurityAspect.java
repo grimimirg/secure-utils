@@ -11,7 +11,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 
 import it.grimiandr.security.jwt.constant.ApiResponse;
 import it.grimiandr.security.jwt.exception.StandardException;
-import it.grimiandr.security.util.SecureUtil;
+import it.grimiandr.security.util.ValidationUtil;
 import it.grimiandr.security.validation.annotation.SecureGenericCheck;
 import it.grimiandr.security.validation.annotation.SecureGenericCheckObject;
 import it.grimiandr.security.validation.annotation.SecurePatternCheck;
@@ -100,14 +100,14 @@ public class SecurityAspect {
 	private void check(SecurityCheckType checkType, Annotation[] annotations, Object arg) {
 		switch (checkType) {
 		case GENERIC:
-			boolean genericSecurityCheck = SecureUtil.genericSecurityCheck(arg);
+			boolean genericSecurityCheck = ValidationUtil.genericSecurityCheck(arg);
 			if (!genericSecurityCheck) {
 				throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 			}
 			break;
 		case OBJECT:
 			try {
-				boolean genericSecurityCheckObject = SecureUtil.genericSecurityCheckObject(arg);
+				boolean genericSecurityCheckObject = ValidationUtil.genericSecurityCheckObject(arg);
 				if (!genericSecurityCheckObject) {
 					throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 				}
@@ -117,7 +117,7 @@ public class SecurityAspect {
 			break;
 		case PATTERN:
 			try {
-				boolean specificSecurityCheck = SecureUtil.specificSecurityCheck(annotations, arg);
+				boolean specificSecurityCheck = ValidationUtil.specificSecurityCheck(annotations, arg);
 				if (!specificSecurityCheck) {
 					throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 				}
