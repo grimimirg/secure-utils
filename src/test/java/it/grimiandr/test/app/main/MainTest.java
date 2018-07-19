@@ -1,7 +1,15 @@
 package it.grimiandr.test.app.main;
 
+import java.net.URL;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.grimiandr.security.csrf.DomainValidation;
+import it.grimiandr.security.csrf.DoubleSubmit;
 import it.grimiandr.security.jwt.constant.ApiResponse;
 import it.grimiandr.security.jwt.core.Jwt;
 import it.grimiandr.security.jwt.core.JwtAuthentication;
@@ -26,6 +34,11 @@ public class MainTest {
 	 * 
 	 */
 	private static String key = "VkYp3s6v9y$B&E)H@McQfTjWmZq4t7w!";
+
+	/**
+	 * 
+	 */
+	private static String salt = "y6x(H#MgRfTlFft";
 
 	/**
 	 * 
@@ -80,6 +93,21 @@ public class MainTest {
 		if (!JwtAuthentication.isTokenValid(tokenData, userToAuthenticate)) {
 			throw new ApiException(ApiResponse.WRONG_PASSWORD_CODE);
 		}
+
+		// ****************************************************
+
+		HttpServletRequest request = null;
+		HttpServletResponse response = null;
+
+		// cookie to send to the client (step 1)
+		Cookie cookieToSend = new Cookie("csrf-cookie", "some-payload");
+		Cookie secureCookieToSend = new DoubleSubmit(cookieToSend, salt, alg, cipher).createSecureCookie();
+
+		// check on each request (step 2) if false, block the request
+		boolean cookieMatchHeader = new DoubleSubmit(request, salt, alg, cipher).setRequestCookie("csrf-cookie")
+				.cookieMatchHeader("csrf-header");
+
+		new DomainValidation(new URL(""), request).checkOriginAndDomain();
 	}
 
 }
