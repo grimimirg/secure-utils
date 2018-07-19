@@ -6,7 +6,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import it.grimiandr.security.util.CSRFUtil;
-import it.grimiandr.security.util.SecureUtil;
+import it.grimiandr.security.util.CryptoUtil;
 
 /**
  * 
@@ -139,7 +139,7 @@ public class DoubleSubmit {
 	 */
 	private String cryptCookiePayload() throws Exception {
 		return Base64.getEncoder().encodeToString(
-				new SecureUtil().setUp(this.name + this.salt, this.alg, this.cipher).encrypt(this.payload));
+				new CryptoUtil().setUp(this.name + this.salt, this.alg, this.cipher).encrypt(this.payload));
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class DoubleSubmit {
 	 */
 	public boolean cookieMatchHeader(String headerName) throws Exception {
 		String headerValue = this.request.getHeader(headerName);
-		SecureUtil secure = new SecureUtil().setUp(this.name + this.salt, this.alg, this.cipher);
+		CryptoUtil secure = new CryptoUtil().setUp(this.name + this.salt, this.alg, this.cipher);
 		String cookie = secure.decrypt(Base64.getDecoder().decode(this.requestCookie.getValue()));
 		String header = secure.decrypt(Base64.getDecoder().decode(headerValue));
 		// encode and value must be the same (strict check)
