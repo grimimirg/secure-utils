@@ -13,7 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import it.grimiandr.security.jwt.constant.ApiResponse;
-import it.grimiandr.security.jwt.exception.ApiException;
+import it.grimiandr.security.jwt.exception.StandardException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.util.CryptoUtil;
 
@@ -133,12 +133,12 @@ public class Jwt {
 
 			// token must not be expired
 			if (Jwt.isTokenExpired(tokenData))
-				throw new ApiException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
+				throw new StandardException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
 
 			return tokenData;
 
 		} catch (Exception e) {
-			throw new ApiException(ApiResponse.INTERNAL_SERVER_ERROR_CODE);
+			throw new StandardException(ApiResponse.INTERNAL_SERVER_ERROR_CODE);
 		}
 
 	}

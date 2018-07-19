@@ -10,17 +10,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import it.grimiandr.security.jwt.constant.ApiResponse;
-import it.grimiandr.security.jwt.exception.ApiException;
-import it.grimiandr.security.util.ValidationUtil;
+import it.grimiandr.security.jwt.exception.StandardException;
+import it.grimiandr.security.util.SecureUtil;
 import it.grimiandr.security.validation.annotation.SecureGenericCheck;
 import it.grimiandr.security.validation.annotation.SecureGenericCheckObject;
 import it.grimiandr.security.validation.annotation.SecurePatternCheck;
-import it.grimiandr.security.validation.annotation.SecureValue;
 
 /**
- * This aspect performs checks on method's parameters.
- * 
- * NB: Useful on Spring Controllers
+ * This aspect performs checks on method's parameters
  * 
  * Looks for every function annotated with @Secure. For each parameter fo
  * them @SecureGenericCheck or @SecureGenericCheckObject will performed.
@@ -37,7 +34,7 @@ public class SecurityAspect {
 	 *
 	 */
 	private enum SecurityCheckType {
-	GENERIC, OBJECT, PATTERN, SINGLE
+	GENERIC, OBJECT, PATTERN
 	}
 
 	/**
@@ -90,9 +87,6 @@ public class SecurityAspect {
 			if (annotation.annotationType().equals(SecurePatternCheck.class)) {
 				return SecurityCheckType.PATTERN;
 			}
-			if (annotation.annotationType().equals(SecureValue.class)) {
-				return SecurityCheckType.SINGLE;
-			}
 		}
 		return null;
 	}
@@ -106,16 +100,16 @@ public class SecurityAspect {
 	private void check(SecurityCheckType checkType, Annotation[] annotations, Object arg) {
 		switch (checkType) {
 		case GENERIC:
-			boolean genericSecurityCheck = ValidationUtil.genericSecurityCheck(arg);
+			boolean genericSecurityCheck = SecureUtil.genericSecurityCheck(arg);
 			if (!genericSecurityCheck) {
-				throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+				throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 			}
 			break;
 		case OBJECT:
 			try {
-				boolean genericSecurityCheckObject = ValidationUtil.genericSecurityCheckObject(arg);
+				boolean genericSecurityCheckObject = SecureUtil.genericSecurityCheckObject(arg);
 				if (!genericSecurityCheckObject) {
-					throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+					throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 				}
 			} catch (Exception e) {
 				// TODO better exception handling
@@ -123,18 +117,12 @@ public class SecurityAspect {
 			break;
 		case PATTERN:
 			try {
-				boolean specificSecurityCheck = ValidationUtil.specificSecurityCheck(annotations, arg);
+				boolean specificSecurityCheck = SecureUtil.specificSecurityCheck(annotations, arg);
 				if (!specificSecurityCheck) {
-					throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+					throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 				}
 			} catch (Exception e) {
-				throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
-			}
-			break;
-		case SINGLE:
-			boolean validateSingleInput = ValidationUtil.validateSingleInputBlackList(arg);
-			if (!validateSingleInput) {
-				throw new ApiException(ApiResponse.INVALID_INPUT_VALUE_CODE);
+				throw new StandardException(ApiResponse.INVALID_INPUT_VALUE_CODE);
 			}
 			break;
 		default:
