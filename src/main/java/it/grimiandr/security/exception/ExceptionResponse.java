@@ -1,4 +1,4 @@
-package it.grimiandr.security.jwt.constant;
+package it.grimiandr.security.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author andre
  *
  */
-public class ApiResponse {
+public class ExceptionResponse {
 
 	public static final int INTERNAL_SERVER_ERROR_CODE = 1;
 	public static final int MISSING_PARAMETER_CODE = 2;
@@ -53,7 +53,7 @@ public class ApiResponse {
 	 * @param code
 	 * @param status
 	 */
-	public ApiResponse(String message, int code, HttpStatus status) {
+	public ExceptionResponse(String message, int code, HttpStatus status) {
 		this.message = message;
 		this.code = code;
 		this.status = status;
@@ -63,7 +63,7 @@ public class ApiResponse {
 	 * 
 	 * @param code
 	 */
-	public ApiResponse(int code) {
+	public ExceptionResponse(int code) {
 		this.code = code;
 		switch (code) {
 		case INTERNAL_SERVER_ERROR_CODE:

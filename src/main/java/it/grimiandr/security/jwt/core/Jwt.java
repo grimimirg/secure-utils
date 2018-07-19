@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import it.grimiandr.security.jwt.constant.ApiResponse;
-import it.grimiandr.security.jwt.exception.StandardException;
+import it.grimiandr.security.exception.ExceptionResponse;
+import it.grimiandr.security.exception.StandardException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.util.CryptoUtil;
 
@@ -133,12 +133,12 @@ public class Jwt {
 
 			// token must not be expired
 			if (Jwt.isTokenExpired(tokenData))
-				throw new StandardException(ApiResponse.EXPIRED_JWT_TOKEN_CODE);
+				throw new StandardException(ExceptionResponse.EXPIRED_JWT_TOKEN_CODE);
 
 			return tokenData;
 
 		} catch (Exception e) {
-			throw new StandardException(ApiResponse.INTERNAL_SERVER_ERROR_CODE);
+			throw new StandardException(ExceptionResponse.INTERNAL_SERVER_ERROR_CODE);
 		}
 
 	}

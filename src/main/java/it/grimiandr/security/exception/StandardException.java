@@ -1,4 +1,4 @@
-package it.grimiandr.security.jwt.exception;
+package it.grimiandr.security.exception;
 
 /**
  * 
