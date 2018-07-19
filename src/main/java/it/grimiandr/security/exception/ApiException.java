@@ -5,7 +5,7 @@ package it.grimiandr.security.exception;
  * @author andre
  *
  */
-public class StandardException extends RuntimeException {
+public class ApiException extends RuntimeException {
 
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class StandardException extends RuntimeException {
 	 * 
 	 * @param msg
 	 */
-	public StandardException(int msg) {
-		super(String.valueOf(msg));
+	public ApiException(int error) {
+		super(new ApplicationExceptionError(error).getApiMessage());
 	}
 }

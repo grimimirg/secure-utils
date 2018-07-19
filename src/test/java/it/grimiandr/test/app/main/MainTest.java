@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.csrf.DomainValidation;
 import it.grimiandr.security.csrf.DoubleSubmit;
-import it.grimiandr.security.exception.ExceptionResponse;
-import it.grimiandr.security.exception.StandardException;
+import it.grimiandr.security.exception.ApplicationException;
 import it.grimiandr.security.jwt.core.Jwt;
 import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
@@ -84,14 +84,14 @@ public class MainTest {
 
 		if (!tokenData.get("refresh").asBoolean()) {
 			if (Jwt.isTokenExpired(tokenData)) {
-				throw new StandardException(ExceptionResponse.EXPIRED_JWT_TOKEN_CODE);
+				throw new ApplicationException(ExceptionConstants.EXPIRED_JWT_TOKEN_CODE);
 			}
 		} else {
-			throw new StandardException(ExceptionResponse.INVALID_JWT_TOKEN_CODE);
+			throw new ApplicationException(ExceptionConstants.INVALID_JWT_TOKEN_CODE);
 		}
 
 		if (!JwtAuthentication.isTokenValid(tokenData, userToAuthenticate)) {
-			throw new StandardException(ExceptionResponse.WRONG_PASSWORD_CODE);
+			throw new ApplicationException(ExceptionConstants.WRONG_PASSWORD_CODE);
 		}
 
 		// ****************************************************

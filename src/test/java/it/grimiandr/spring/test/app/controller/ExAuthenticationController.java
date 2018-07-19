@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import it.grimiandr.security.exception.ExceptionResponse;
-import it.grimiandr.security.exception.StandardException;
+import it.grimiandr.security.constant.ExceptionConstants;
+import it.grimiandr.security.exception.ApiException;
 import it.grimiandr.security.jwt.annotation.RequireClientIdAuth;
 import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
@@ -74,18 +74,18 @@ public class ExAuthenticationController {
 			throws Exception {
 		if ((userCredentials.getUsername() == null || userCredentials.getPassword() == null)
 				&& userCredentials.getRefresh_token() == null) {
-			throw new StandardException(ExceptionResponse.MISSING_PARAMETER_CODE);
+			throw new ApiException(ExceptionConstants.MISSING_PARAMETER_CODE);
 		}
 
 		if (userCredentials.getUsername() == null && userCredentials.getPassword() == null) {
-			throw new StandardException(ExceptionResponse.MISSING_PARAMETER_CODE);
+			throw new ApiException(ExceptionConstants.MISSING_PARAMETER_CODE);
 		}
 
 		// ************************************************************************************
 		User userByUsername = userService.getUserByUsername(userCredentials.getUsername());
 
 		if (userByUsername == null) {
-			throw new StandardException(ExceptionResponse.NOT_FOUND_CODE);
+			throw new ApiException(ExceptionConstants.NOT_FOUND_CODE);
 		}
 		// ************************************************************************************
 
