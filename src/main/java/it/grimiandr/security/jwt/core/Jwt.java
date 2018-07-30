@@ -78,14 +78,17 @@ public class Jwt {
 		Date authTokenExpirationDate = Date
 				.from(authenticationTokenExpirationDate.atZone(ZoneId.systemDefault()).toInstant());
 
-		// expiration date for refresh_token
-		LocalDateTime refreshTokenExpirationDate = LocalDateTime.now().plusDays(refreshJwtExpirationDays);
-		Date refrTokenExpirationDate = Date.from(refreshTokenExpirationDate.atZone(ZoneId.systemDefault()).toInstant());
-
 		response.setAccessToken(generateToken(userIdentifier, password, secret, authTokenExpirationDate, false));
 		response.setExpiresOn(authTokenExpirationDate);
 		response.setUserIdentifier(userIdentifier);
-		response.setRefreshToken(generateToken(userIdentifier, password, secret, refrTokenExpirationDate, true));
+
+		if (refreshJwtExpirationDays == 0) {
+			// expiration date for refresh_token
+			LocalDateTime refreshTokenExpirationDate = LocalDateTime.now().plusDays(refreshJwtExpirationDays);
+			Date refrTokenExpirationDate = Date
+					.from(refreshTokenExpirationDate.atZone(ZoneId.systemDefault()).toInstant());
+			response.setRefreshToken(generateToken(userIdentifier, password, secret, refrTokenExpirationDate, true));
+		}
 
 		return response;
 	}

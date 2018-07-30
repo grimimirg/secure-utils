@@ -92,9 +92,8 @@ public class ExAuthenticationController {
 		UserToAuthenticate userToAuthenticate = new UserToAuthenticate(userByUsername.getId().toString(),
 				userByUsername.getEmail(), userByUsername.getPassword());
 
-		AuthenticateResponse authenticate = new JwtAuthentication(this.secret, this.key, this.alg, this.cipher,
-				this.expirationDaysToken, this.expirationDaysRefreshToken).authenticate(userCredentials,
-						userToAuthenticate);
+		AuthenticateResponse authenticate = new JwtAuthentication(this.expirationDaysToken,
+				this.expirationDaysRefreshToken).authenticate(userCredentials, userToAuthenticate);
 
 		return authenticate;
 	}
