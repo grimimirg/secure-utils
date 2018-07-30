@@ -41,6 +41,13 @@ public class Jwt {
 
 	/**
 	 * 
+	 */
+	public Jwt() {
+		super();
+	}
+
+	/**
+	 * 
 	 * @param key
 	 * @param alg
 	 * @param cipher
@@ -108,7 +115,8 @@ public class Jwt {
 		}
 
 		String compact = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
-		byte[] encrypt = new CryptoUtil().setUp(this.key, this.alg, this.cipher).encrypt(compact);
+		byte[] encrypt = this.key != null ? new CryptoUtil().setUp(this.key, this.alg, this.cipher).encrypt(compact)
+				: compact.getBytes();
 		return new Base64().encodeAsString(encrypt);
 	}
 
@@ -123,8 +131,9 @@ public class Jwt {
 
 			// gets a clean string token
 			byte[] decodeBase64 = Base64.decodeBase64(encryptedToken);
-			String decryptedEncodedToken = new CryptoUtil().setUp(this.key, this.alg, this.cipher)
-					.decrypt(decodeBase64);
+			String decryptedEncodedToken = this.key != null
+					? new CryptoUtil().setUp(this.key, this.alg, this.cipher).decrypt(decodeBase64)
+					: new String(decodeBase64);
 
 			String decodedToken = new String(Base64.decodeBase64(decryptedEncodedToken));
 

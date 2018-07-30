@@ -50,6 +50,17 @@ public class JwtAuthentication {
 
 	/**
 	 * 
+	 * @param jwtExpirationDays
+	 * @param refreshJwtExpirationDays
+	 */
+	public JwtAuthentication(int jwtExpirationDays, int refreshJwtExpirationDays) {
+		super();
+		this.jwtExpirationDays = jwtExpirationDays;
+		this.refreshJwtExpirationDays = refreshJwtExpirationDays;
+	}
+
+	/**
+	 * 
 	 * @param secret
 	 * @param key
 	 * @param alg
