@@ -3,6 +3,7 @@ package it.grimiandr.security.jwt.core;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -42,6 +43,11 @@ public class Jwt {
 	/**
 	 * 
 	 */
+	private Map<String, String> args;
+
+	/**
+	 * 
+	 */
 	public Jwt() {
 		super();
 	}
@@ -60,12 +66,31 @@ public class Jwt {
 	}
 
 	/**
+	 * @param args
+	 */
+	public Jwt setArgs(Map<String, String> args) {
+		this.args = args;
+		return this;
+	}
+
+	/**
+	 * 
+	 * @param args
+	 * @return
+	 */
+	public Jwt setArg(String key, String value) {
+		this.args.put(key, value);
+		return this;
+	}
+
+	/**
 	 * 
 	 * @param userIdentifier
 	 * @param password
 	 * @param secret
 	 * @param jwtExpirationDays
 	 * @param refreshJwtExpirationDays
+	 * @param args
 	 * @return
 	 * @throws Exception
 	 */
@@ -78,7 +103,8 @@ public class Jwt {
 		Date authTokenExpirationDate = Date
 				.from(authenticationTokenExpirationDate.atZone(ZoneId.systemDefault()).toInstant());
 
-		response.setAccessToken(generateToken(userIdentifier, password, secret, authTokenExpirationDate, false));
+		response.setAccessToken(
+				this.generateToken(userIdentifier, password, secret, authTokenExpirationDate, false, this.args));
 		response.setExpiresOn(authTokenExpirationDate);
 		response.setUserIdentifier(userIdentifier);
 
@@ -87,7 +113,8 @@ public class Jwt {
 			LocalDateTime refreshTokenExpirationDate = LocalDateTime.now().plusDays(refreshJwtExpirationDays);
 			Date refrTokenExpirationDate = Date
 					.from(refreshTokenExpirationDate.atZone(ZoneId.systemDefault()).toInstant());
-			response.setRefreshToken(generateToken(userIdentifier, password, secret, refrTokenExpirationDate, true));
+			response.setRefreshToken(
+					this.generateToken(userIdentifier, password, secret, refrTokenExpirationDate, true, this.args));
 		}
 
 		return response;
@@ -97,7 +124,7 @@ public class Jwt {
 	 * Generates a JWT token containing username as subject, and userId and role as
 	 * additional claims. These properties are taken from the specified User object.
 	 * 
-	 * @param userIdentifier
+	 * @param identifier
 	 * @param password
 	 * @param secret
 	 * @param expiration
@@ -105,9 +132,9 @@ public class Jwt {
 	 * @return
 	 * @throws Exception
 	 */
-	private String generateToken(String userIdentifier, String password, String secret, Date expiration,
-			boolean isRefreshToken) throws Exception {
-		Claims claims = Jwts.claims().setSubject(userIdentifier);
+	private String generateToken(String identifier, String password, String secret, Date expiration,
+			boolean isRefreshToken, Map<String, String> args) throws Exception {
+		Claims claims = Jwts.claims().setSubject(identifier);
 		claims.put("expiration", expiration);
 
 		// discriminating whether is a refresh token or not
@@ -115,6 +142,11 @@ public class Jwt {
 
 		if (password != null) {
 			claims.put("password", password);
+		}
+
+		// other optional parameters that may be inside JWT token
+		for (Map.Entry<String, String> entry : args.entrySet()) {
+			claims.put(entry.getKey(), entry.getValue());
 		}
 
 		String compact = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();

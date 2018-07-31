@@ -136,6 +136,7 @@ public class JwtAuthentication {
 
 			// in case of refresh_token
 			if (userCredentials.getRefresh_token() != null) {
+
 				decodedToken = new String(Base64.decodeBase64(userCredentials.getRefresh_token()), "UTF-8");
 				tokenData = new ObjectMapper().readValue(decodedToken.substring(15), ObjectNode.class);
 
@@ -145,7 +146,9 @@ public class JwtAuthentication {
 				}
 
 			} else {
+
 				try {
+
 					// the password must be the same
 					if (!this.passwordMatch(userCredentials.getPassword(), userToAuthenticate)) {
 						throw new StandardException(ExceptionResponse.WRONG_PASSWORD_CODE);
