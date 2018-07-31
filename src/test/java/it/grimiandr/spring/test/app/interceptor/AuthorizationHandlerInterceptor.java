@@ -11,10 +11,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.grimiandr.security.exception.ExceptionResponse;
 import it.grimiandr.security.exception.StandardException;
+import it.grimiandr.security.jwt.Jwt;
+import it.grimiandr.security.jwt.JwtAuthentication;
 import it.grimiandr.security.jwt.annotation.RequireClientIdAuth;
 import it.grimiandr.security.jwt.annotation.RequireJWTAuth;
-import it.grimiandr.security.jwt.core.Jwt;
-import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
 import it.grimiandr.security.util.StringUtil;
 import it.grimiandr.spring.test.app.constants.WebConstants;

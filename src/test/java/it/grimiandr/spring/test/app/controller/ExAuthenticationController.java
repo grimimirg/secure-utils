@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.grimiandr.security.exception.ExceptionResponse;
 import it.grimiandr.security.exception.StandardException;
+import it.grimiandr.security.jwt.JwtAuthentication;
 import it.grimiandr.security.jwt.annotation.RequireClientIdAuth;
-import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;

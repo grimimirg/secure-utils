@@ -1,4 +1,4 @@
-package it.grimiandr.security.jwt.core;
+package it.grimiandr.security.jwt;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
