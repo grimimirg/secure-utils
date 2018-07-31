@@ -4,8 +4,8 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 
-import it.grimiandr.security.exception.ExceptionResponse;
-import it.grimiandr.security.exception.StandardException;
+import it.grimiandr.security.constant.ExceptionConstants;
+import it.grimiandr.security.exception.ApplicationException;
 import it.grimiandr.security.util.StringUtil;
 
 /**
@@ -67,7 +67,7 @@ public class DomainValidation {
 			// If this one is empty too then we trace the event and the request should be
 			// blocked
 			if (StringUtil.isVoid(source)) {
-				throw new StandardException(ExceptionResponse.INTERNAL_SERVER_ERROR_CODE);
+				throw new ApplicationException(ExceptionConstants.INTERNAL_SERVER_ERROR_CODE);
 			}
 		}
 
@@ -78,7 +78,7 @@ public class DomainValidation {
 				|| this.targetOrigin.getPort() != sourceURL.getPort()) {
 			// One the part do not match so we trace the event and the request should be
 			// blocked
-			throw new StandardException(ExceptionResponse.INTERNAL_SERVER_ERROR_CODE);
+			throw new ApplicationException(ExceptionConstants.INTERNAL_SERVER_ERROR_CODE);
 		}
 	}
 
