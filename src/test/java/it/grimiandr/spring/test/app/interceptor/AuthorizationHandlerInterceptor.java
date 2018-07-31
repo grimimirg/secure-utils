@@ -13,11 +13,11 @@ import it.grimiandr.security.exception.ExceptionResponse;
 import it.grimiandr.security.exception.StandardException;
 import it.grimiandr.security.jwt.annotation.RequireClientIdAuth;
 import it.grimiandr.security.jwt.annotation.RequireJWTAuth;
-import it.grimiandr.security.jwt.constant.WebConstants;
 import it.grimiandr.security.jwt.core.Jwt;
 import it.grimiandr.security.jwt.core.JwtAuthentication;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
 import it.grimiandr.security.util.StringUtil;
+import it.grimiandr.spring.test.app.constants.WebConstants;
 import it.grimiandr.spring.test.app.model.User;
 import it.grimiandr.spring.test.app.service.UserService;
 

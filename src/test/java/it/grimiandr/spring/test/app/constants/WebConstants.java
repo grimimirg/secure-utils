@@ -1,4 +1,4 @@
-package it.grimiandr.security.jwt.constant;
+package it.grimiandr.spring.test.app.constants;
 
 /**
  * 
