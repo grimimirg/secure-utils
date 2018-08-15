@@ -5,6 +5,7 @@ import java.util.Base64;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import it.grimiandr.security.ObjectCrypter;
 import it.grimiandr.security.util.CSRFUtil;
 import it.grimiandr.security.util.CryptoUtil;
 
@@ -71,6 +72,19 @@ public class DoubleSubmit {
 
 	/**
 	 * 
+	 * @param request
+	 * @param crypter
+	 */
+	public DoubleSubmit(HttpServletRequest request, ObjectCrypter crypter) {
+		super();
+		this.request = request;
+		this.salt = crypter.getSalt();
+		this.alg = crypter.getAlg();
+		this.cipher = crypter.getCipher();
+	}
+
+	/**
+	 * 
 	 * @param name
 	 * @param payload
 	 */
@@ -121,6 +135,20 @@ public class DoubleSubmit {
 		this.salt = salt;
 		this.alg = alg;
 		this.cipher = cipher;
+	}
+
+	/**
+	 * 
+	 * @param cookie
+	 * @param crypter
+	 */
+	public DoubleSubmit(Cookie cookie, ObjectCrypter crypter) {
+		super();
+		this.name = cookie.getName();
+		this.payload = cookie.getValue();
+		this.salt = crypter.getSalt();
+		this.alg = crypter.getAlg();
+		this.cipher = crypter.getCipher();
 	}
 
 	/**
@@ -245,8 +273,7 @@ public class DoubleSubmit {
 	}
 
 	/**
-	 * @param requestCookie
-	 *            the requestCookie to set
+	 * @param requestCookie the requestCookie to set
 	 */
 	public DoubleSubmit setRequestCookie(Cookie requestCookie) {
 		this.requestCookie = requestCookie;

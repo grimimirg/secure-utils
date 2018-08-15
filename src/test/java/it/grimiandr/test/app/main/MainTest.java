@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.grimiandr.security.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.csrf.DomainValidation;
 import it.grimiandr.security.csrf.DoubleSubmit;
@@ -72,15 +73,17 @@ public class MainTest {
 
 		// the actual user that must be authenticated (usually taken locally based on
 		// "username" of "UserCredentials")
-		UserToAuthenticate userToAuthenticate = new UserToAuthenticate("grimiandr@protonmail.ch",
-				"grimiandr@protonmail.ch", "123456");
+		UserToAuthenticate userToAuthenticate = new UserToAuthenticate("grimiandr@protonmail.ch", "grimiandr",
+				"123456");
 
-		AuthenticateResponse authenticate = new JwtAuthentication(secret, key, alg, cipher, expirationDaysToken,
+		ObjectCrypter objectCrypter = new ObjectCrypter(secret, key, salt, alg, cipher);
+
+		AuthenticateResponse authenticate = new JwtAuthentication(objectCrypter, expirationDaysToken,
 				expirationDaysRefreshToken).authenticate(userCredentials, userToAuthenticate);
 
 		String accessToken = authenticate.getAccessToken();
 
-		ObjectNode tokenData = new Jwt(key, alg, cipher).decodeToken(accessToken);
+		ObjectNode tokenData = new Jwt(objectCrypter).decodeToken(accessToken);
 
 		if (!tokenData.get("refresh").asBoolean()) {
 			if (Jwt.isTokenExpired(tokenData)) {
@@ -101,10 +104,10 @@ public class MainTest {
 
 		// cookie to send to the client (step 1)
 		Cookie cookieToSend = new Cookie("csrf-cookie", "some-payload");
-		Cookie secureCookieToSend = new DoubleSubmit(cookieToSend, salt, alg, cipher).createSecureCookie();
+		Cookie secureCookieToSend = new DoubleSubmit(cookieToSend, objectCrypter).createSecureCookie();
 
 		// check on each request (step 2) if false, block the request
-		boolean cookieMatchHeader = new DoubleSubmit(request, salt, alg, cipher).setRequestCookie("csrf-cookie")
+		boolean cookieMatchHeader = new DoubleSubmit(request, objectCrypter).setRequestCookie("csrf-cookie")
 				.cookieMatchHeader("csrf-header");
 
 		new DomainValidation(new URL(""), request).checkOriginAndDomain();

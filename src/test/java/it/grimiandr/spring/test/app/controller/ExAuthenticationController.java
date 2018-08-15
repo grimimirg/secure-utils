@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import it.grimiandr.security.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.exception.ApiException;
 import it.grimiandr.security.jwt.JwtAuthentication;
@@ -89,12 +90,13 @@ public class ExAuthenticationController {
 		}
 		// ************************************************************************************
 
+		ObjectCrypter objectCrypter = new ObjectCrypter(secret, key, null, alg, cipher);
+
 		UserToAuthenticate userToAuthenticate = new UserToAuthenticate(userByUsername.getId().toString(),
 				userByUsername.getEmail(), userByUsername.getPassword());
 
-		AuthenticateResponse authenticate = new JwtAuthentication(this.secret, this.key, this.alg, this.cipher,
-				this.expirationDaysToken, this.expirationDaysRefreshToken).authenticate(userCredentials,
-						userToAuthenticate);
+		AuthenticateResponse authenticate = new JwtAuthentication(objectCrypter, this.expirationDaysToken,
+				this.expirationDaysRefreshToken).authenticate(userCredentials, userToAuthenticate);
 
 		return authenticate;
 	}

@@ -5,6 +5,7 @@ import org.apache.commons.codec.binary.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.grimiandr.security.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.exception.ApplicationException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
@@ -21,22 +22,7 @@ public class JwtAuthentication {
 	/**
 	 * 
 	 */
-	private String secret;
-
-	/**
-	 * 
-	 */
-	private String key;
-
-	/*
-	 * 
-	 */
-	private String alg;
-
-	/**
-	 * 
-	 */
-	private String cipher;
+	private ObjectCrypter crypter;
 
 	/**
 	 * 
@@ -76,13 +62,10 @@ public class JwtAuthentication {
 	 * @param cipher
 	 * @param jwtExpirationDays
 	 */
-	public JwtAuthentication(String secret, String key, String alg, String cipher, int jwtExpirationDays) {
+	public JwtAuthentication(ObjectCrypter crypter, int jwtExpirationDays) {
 		super();
 		this.jwtExpirationDays = jwtExpirationDays;
-		this.secret = secret;
-		this.key = key;
-		this.alg = alg;
-		this.cipher = cipher;
+		this.crypter = crypter;
 	}
 
 	/**
@@ -94,15 +77,11 @@ public class JwtAuthentication {
 	 * @param jwtExpirationDays
 	 * @param refreshJwtExpirationDays
 	 */
-	public JwtAuthentication(String secret, String key, String alg, String cipher, int jwtExpirationDays,
-			int refreshJwtExpirationDays) {
+	public JwtAuthentication(ObjectCrypter crypter, int jwtExpirationDays, int refreshJwtExpirationDays) {
 		super();
 		this.jwtExpirationDays = jwtExpirationDays;
-		this.secret = secret;
 		this.refreshJwtExpirationDays = refreshJwtExpirationDays;
-		this.key = key;
-		this.alg = alg;
-		this.cipher = cipher;
+		this.crypter = crypter;
 	}
 
 	/**
@@ -165,8 +144,8 @@ public class JwtAuthentication {
 		}
 
 		// a new authentication is generated
-		return new Jwt(this.key, this.alg, this.cipher).generateAuthenticateResponse(
-				userToAuthenticate.getUserIdentifier(), userToAuthenticate.getPassword(), this.secret,
+		return new Jwt(crypter.getKey(), crypter.getAlg(), crypter.getCipher()).generateAuthenticateResponse(
+				userToAuthenticate.getUserIdentifier(), userToAuthenticate.getPassword(), crypter.getSecret(),
 				this.jwtExpirationDays, this.refreshJwtExpirationDays);
 
 	}

@@ -27,6 +27,30 @@ public class ObjectCrypter {
 	private String cipher;
 
 	/**
+	 * 
+	 */
+	public ObjectCrypter() {
+		super();
+	}
+
+	/**
+	 * 
+	 * @param secret
+	 * @param key
+	 * @param salt
+	 * @param alg
+	 * @param cipher
+	 */
+	public ObjectCrypter(String secret, String key, String salt, String alg, String cipher) {
+		super();
+		this.secret = secret;
+		this.key = key;
+		this.salt = salt;
+		this.alg = alg;
+		this.cipher = cipher;
+	}
+
+	/**
 	 * @return the secret
 	 */
 	public String getSecret() {
@@ -34,8 +58,7 @@ public class ObjectCrypter {
 	}
 
 	/**
-	 * @param secret
-	 *            the secret to set
+	 * @param secret the secret to set
 	 */
 	public void setSecret(String secret) {
 		this.secret = secret;
@@ -49,8 +72,7 @@ public class ObjectCrypter {
 	}
 
 	/**
-	 * @param key
-	 *            the key to set
+	 * @param key the key to set
 	 */
 	public void setKey(String key) {
 		this.key = key;
@@ -64,8 +86,7 @@ public class ObjectCrypter {
 	}
 
 	/**
-	 * @param salt
-	 *            the salt to set
+	 * @param salt the salt to set
 	 */
 	public void setSalt(String salt) {
 		this.salt = salt;
@@ -79,8 +100,7 @@ public class ObjectCrypter {
 	}
 
 	/**
-	 * @param alg
-	 *            the alg to set
+	 * @param alg the alg to set
 	 */
 	public void setAlg(String alg) {
 		this.alg = alg;
@@ -94,8 +114,7 @@ public class ObjectCrypter {
 	}
 
 	/**
-	 * @param cipher
-	 *            the cipher to set
+	 * @param cipher the cipher to set
 	 */
 	public void setCipher(String cipher) {
 		this.cipher = cipher;

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import it.grimiandr.security.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.exception.ApplicationException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
@@ -63,6 +64,17 @@ public class Jwt {
 		this.key = key;
 		this.alg = alg;
 		this.cipher = cipher;
+	}
+
+	/**
+	 * 
+	 * @param crypter
+	 */
+	public Jwt(ObjectCrypter crypter) {
+		super();
+		this.key = crypter.getKey();
+		this.alg = crypter.getAlg();
+		this.cipher = crypter.getCipher();
 	}
 
 	/**
