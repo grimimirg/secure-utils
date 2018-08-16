@@ -76,7 +76,7 @@ public class MainTest {
 		UserToAuthenticate userToAuthenticate = new UserToAuthenticate("grimiandr@protonmail.ch", "grimiandr",
 				"123456");
 
-		ObjectCrypter objectCrypter = new ObjectCrypter(secret, key, salt, alg, cipher);
+		ObjectCrypter objectCrypter = ObjectCrypter.getInstance().build(secret, key, salt, alg, cipher);
 
 		AuthenticateResponse authenticate = new JwtAuthentication(objectCrypter, expirationDaysToken,
 				expirationDaysRefreshToken).authenticate(userCredentials, userToAuthenticate);

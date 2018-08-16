@@ -90,7 +90,7 @@ public class ExAuthenticationController {
 		}
 		// ************************************************************************************
 
-		ObjectCrypter objectCrypter = new ObjectCrypter(secret, key, null, alg, cipher);
+		ObjectCrypter objectCrypter = ObjectCrypter.getInstance().build(secret, key, null, alg, cipher);
 
 		UserToAuthenticate userToAuthenticate = new UserToAuthenticate(userByUsername.getId().toString(),
 				userByUsername.getEmail(), userByUsername.getPassword());
