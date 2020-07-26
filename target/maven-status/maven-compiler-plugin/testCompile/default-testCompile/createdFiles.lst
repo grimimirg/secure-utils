@@ -1,0 +1,8 @@
+it\grimiandr\spring\test\app\service\UserService.class
+it\grimiandr\spring\test\app\pattern\UserPattern.class
+it\grimiandr\spring\test\app\interceptor\AuthorizationHandlerInterceptor.class
+it\grimiandr\spring\test\app\controller\ExAuthenticationController.class
+it\grimiandr\spring\test\app\controller\ExController.class
+it\grimiandr\spring\test\app\constants\WebConstants.class
+it\grimiandr\spring\test\app\model\User.class
+it\grimiandr\test\app\main\MainTest.class

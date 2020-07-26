@@ -1,0 +1,8 @@
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\controller\ExAuthenticationController.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\test\app\main\MainTest.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\pattern\UserPattern.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\controller\ExController.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\constants\WebConstants.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\interceptor\AuthorizationHandlerInterceptor.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\model\User.java
+C:\_projects\secure-utils\src\test\java\it\grimiandr\spring\test\app\service\UserService.java

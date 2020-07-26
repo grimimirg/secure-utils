@@ -12,6 +12,8 @@ import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * 
  * @author andre
@@ -85,9 +87,9 @@ public class JwtAuthentication {
 	}
 
 	/**
-	 * 
-	 * @param userId
+	 *
 	 * @param password
+	 * @param user
 	 * @return
 	 */
 	private boolean passwordMatch(String password, UserToAuthenticate user) {
@@ -95,7 +97,7 @@ public class JwtAuthentication {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param userCredentials
 	 * @param userToAuthenticate
 	 * @return
@@ -116,7 +118,7 @@ public class JwtAuthentication {
 			// in case of refresh_token
 			if (userCredentials.getRefresh_token() != null) {
 
-				decodedToken = new String(Base64.decodeBase64(userCredentials.getRefresh_token()), "UTF-8");
+				decodedToken = new String(Base64.decodeBase64(userCredentials.getRefresh_token()), StandardCharsets.UTF_8);
 				tokenData = new ObjectMapper().readValue(decodedToken.substring(15), ObjectNode.class);
 
 				// password check for each authentication with refresh_token
