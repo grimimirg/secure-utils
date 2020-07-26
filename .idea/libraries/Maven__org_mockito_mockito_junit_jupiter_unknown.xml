@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mockito:mockito-junit-jupiter:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-junit-jupiter/unknown/mockito-junit-jupiter-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-junit-jupiter/unknown/mockito-junit-jupiter-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-junit-jupiter/unknown/mockito-junit-jupiter-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -12,6 +12,6 @@ public interface PatternSecurityCheck {
 	 * @param object
 	 * @return
 	 */
-	public boolean isPatternMatch(Object object);
+	boolean isPatternMatch(Object object);
 
 }

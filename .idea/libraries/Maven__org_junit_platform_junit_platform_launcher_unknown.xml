@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.junit.platform:junit-platform-launcher:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-launcher/unknown/junit-platform-launcher-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-launcher/unknown/junit-platform-launcher-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-launcher/unknown/junit-platform-launcher-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
