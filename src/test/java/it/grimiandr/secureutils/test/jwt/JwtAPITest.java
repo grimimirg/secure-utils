@@ -7,11 +7,12 @@ import it.grimiandr.security.jwt.JwtAuthentication;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
 import it.grimiandr.security.jwt.model.UserCredentials;
 import it.grimiandr.security.jwt.model.UserToAuthenticate;
+import it.grimiandr.security.util.ObjectCrypter;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * @author andre
+ *
  */
 @Test
 public class JwtAPITest {
@@ -37,8 +38,10 @@ public class JwtAPITest {
         UserCredentials userCredentials = new UserCredentials(USERNAME, PASSWORD);
         UserToAuthenticate userToAuthenticate = new UserToAuthenticate(IDENTIFIER, USERNAME, PASSWORD);
 
+        ObjectCrypter objectCrypter = ObjectCrypter.getInstance().build(SECRET, KEY, null, ALG, CIPHER);
+
         AuthenticateResponse authenticate =
-                new JwtAuthentication(SECRET, KEY, ALG, CIPHER, EXPIRATION_DAYS_TOKEN, EXPIRATION_DAYS_REFRESH_TOKEN)
+                new JwtAuthentication(objectCrypter, EXPIRATION_DAYS_TOKEN, EXPIRATION_DAYS_REFRESH_TOKEN)
                         .authenticate(userCredentials, userToAuthenticate);
 
         Assert.assertNotNull(authenticate);

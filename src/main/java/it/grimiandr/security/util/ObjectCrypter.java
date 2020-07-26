@@ -1,4 +1,4 @@
-package it.grimiandr.security;
+package it.grimiandr.security.util;
 
 public class ObjectCrypter {
 	/**

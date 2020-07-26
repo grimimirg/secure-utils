@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import it.grimiandr.security.ObjectCrypter;
+import it.grimiandr.security.util.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.exception.ApplicationException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;

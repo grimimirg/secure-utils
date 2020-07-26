@@ -1,5 +1,6 @@
 package it.grimiandr.security.csrf;
 
+import it.grimiandr.security.util.ObjectCrypter;
 import it.grimiandr.security.util.CSRFUtil;
 import it.grimiandr.security.util.CryptoUtil;
 

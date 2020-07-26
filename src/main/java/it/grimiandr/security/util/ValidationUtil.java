@@ -27,12 +27,11 @@ public class ValidationUtil {
 			tmp = tmp.toLowerCase();
 		}
 
-		return tmp == null ? true
-				: !((tmp.substring(0, 1).equals("'") || tmp.substring(tmp.length() - 1, tmp.length()).equals("'"))
-						|| (tmp.contains("+") || tmp.contains(" + ") || tmp.contains("+ "))
-						|| (tmp.contains(" and ") || tmp.contains(" and") || tmp.contains("and "))
-						|| (tmp.contains(" or ") || tmp.contains(" or") || tmp.contains("or "))
-						|| (tmp.contains(" union ") || tmp.contains(" union") || tmp.contains("union ")));
+		return tmp == null || !((tmp.startsWith("'") || tmp.startsWith("'", tmp.length() - 1))
+				|| (tmp.contains("+") || tmp.contains(" + ") || tmp.contains("+ "))
+				|| (tmp.contains(" and ") || tmp.contains(" and") || tmp.contains("and "))
+				|| (tmp.contains(" or ") || tmp.contains(" or") || tmp.contains("or "))
+				|| (tmp.contains(" union ") || tmp.contains(" union") || tmp.contains("union ")));
 	}
 
 	/**
@@ -126,7 +125,7 @@ public class ValidationUtil {
 			return true;
 
 		for (String forbidden : blackList)
-			if (tmp.indexOf(forbidden) != -1)
+			if (tmp.contains(forbidden))
 				return true;
 
 		return false;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import it.grimiandr.security.ObjectCrypter;
+import it.grimiandr.security.util.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.exception.ApiException;
 import it.grimiandr.security.jwt.JwtAuthentication;

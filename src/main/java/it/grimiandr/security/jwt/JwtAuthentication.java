@@ -5,7 +5,7 @@ import org.apache.commons.codec.binary.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import it.grimiandr.security.ObjectCrypter;
+import it.grimiandr.security.util.ObjectCrypter;
 import it.grimiandr.security.constant.ExceptionConstants;
 import it.grimiandr.security.exception.ApplicationException;
 import it.grimiandr.security.jwt.model.AuthenticateResponse;
@@ -57,11 +57,8 @@ public class JwtAuthentication {
 	}
 
 	/**
-	 * 
-	 * @param secret
-	 * @param key
-	 * @param alg
-	 * @param cipher
+	 *
+	 * @param crypter
 	 * @param jwtExpirationDays
 	 */
 	public JwtAuthentication(ObjectCrypter crypter, int jwtExpirationDays) {
@@ -71,11 +68,8 @@ public class JwtAuthentication {
 	}
 
 	/**
-	 * 
-	 * @param secret
-	 * @param key
-	 * @param alg
-	 * @param cipher
+	 *
+	 * @param crypter
 	 * @param jwtExpirationDays
 	 * @param refreshJwtExpirationDays
 	 */
@@ -146,8 +140,8 @@ public class JwtAuthentication {
 		}
 
 		// a new authentication is generated
-		return new Jwt(crypter.getKey(), crypter.getAlg(), crypter.getCipher()).generateAuthenticateResponse(
-				userToAuthenticate.getUserIdentifier(), userToAuthenticate.getPassword(), crypter.getSecret(),
+		return new Jwt(this.crypter.getKey(), this.crypter.getAlg(), this.crypter.getCipher()).generateAuthenticateResponse(
+				userToAuthenticate.getUserIdentifier(), userToAuthenticate.getPassword(), this.crypter.getSecret(),
 				this.jwtExpirationDays, this.refreshJwtExpirationDays);
 
 	}
